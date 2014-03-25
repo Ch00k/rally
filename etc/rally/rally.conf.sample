@@ -36,7 +36,7 @@
 
 # Print debugging output (set logging level to DEBUG instead
 # of default WARNING level). (boolean value)
-#debug=false
+debug=false
 
 # Print more verbose output (set logging level to INFO instead
 # of default WARNING level). (boolean value)
@@ -218,6 +218,7 @@
 #nova_server_suspend_timeout=300
 #nova_server_image_create_timeout=300
 #nova_server_image_delete_timeout=300
+#nova_server_volume_attach_timeout=300
 
 # These values set how frequently rally will poll a resource when waiting for
 # a status change.
@@ -231,6 +232,7 @@
 #nova_server_suspend_poll_interval=2
 #nova_server_image_create_poll_interval=2
 #nova_server_image_delete_poll_interval=2
+#nova_server_volume_attach_poll_interval=2
 
 # Cinder options follow the same format as nova options above.
 #cinder_volume_create_prepoll_delay=2

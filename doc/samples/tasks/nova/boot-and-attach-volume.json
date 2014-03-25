@@ -1,0 +1,22 @@
+{
+    "NovaServers.boot_server_and_attach_volume": [
+        {
+            "args": {
+                "flavor_id": "9838a62a-873f-48d6-ac04-c4c09cb12ba2",
+                "image_id": "b93188e8-f69d-40e0-a18b-3a1c3bca32c2",
+                "volume_size": 10
+            },
+            "runner": {
+                "type": "continuous",
+                "times": 1,
+                "active_users": 2
+            },
+            "context": {
+                "users": {
+                    "tenants": 3,
+                    "users_per_tenant": 2
+                }
+            }
+        }
+    ]
+}

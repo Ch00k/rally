@@ -35,7 +35,8 @@ option_names_and_defaults = [
     ('unrescue', 2, 300, 2),
     ('suspend', 2, 300, 2),
     ('image_create', 0, 300, 2),
-    ('image_delete', 0, 300, 2)
+    ('image_delete', 0, 300, 2),
+    ('volume_attach', 0, 300, 2)
 ]
 
 for action, prepoll, timeout, poll in option_names_and_defaults:
@@ -275,6 +276,33 @@ class NovaScenario(base.Scenario):
                 CONF.benchmark.nova_server_image_create_poll_interval
         )
         return image
+
+    @scenario_utils.atomic_action_timer('nova.attach_volume')
+    def _attach_volume(self, server, volume):
+        """Attaches a given volume to a given server
+
+        Returns when the volume is actually attached to the server and is in
+        the "Attached" state
+
+        :param server: Server object to which the volume will be attached
+        :param volume: Volume object which will be attached to the server
+
+        :returns:
+        """
+        volume_attachment = \
+            self.clients("nova").volumes.create_server_volume(server.id,
+                                                              volume.id,
+                                                              '/dev/vdd')
+        volume = self.clients("cinder").volumes.get(volume_attachment.volumeId)
+        volume = bench_utils.wait_for(
+            volume,
+            is_ready=bench_utils.resource_is("in-use"),
+            update_resource=bench_utils.get_from_manager(),
+            timeout=CONF.benchmark.nova_server_volume_attach_timeout,
+            check_interval=
+                CONF.benchmark.nova_server_volume_attach_poll_interval
+        )
+        return volume
 
     @scenario_utils.atomic_action_timer('nova.boot_servers')
     def _boot_servers(self, name_prefix, image_id, flavor_id,

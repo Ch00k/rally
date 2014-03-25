@@ -195,6 +195,15 @@ class NovaServers(utils.NovaScenario,
                           block_device_mapping=block_device_mapping,
                           **kwargs)
 
+    @valid.add_validator(valid.image_valid_on_flavor("flavor_id", "image_id"))
+    def boot_server_and_attach_volume(self, image_id, flavor_id, volume_size,
+                                      **kwargs):
+        """Test booting a server then attaching a volume to it."""
+        server_name = self._generate_random_name(16)
+        server = self._boot_server(server_name, image_id, flavor_id, **kwargs)
+        volume = self._create_volume(volume_size)
+        self._attach_volume(server, volume)
+
     def _bind_actions(self):
         actions = ['hard_reboot', 'soft_reboot', 'stop_start',
                    'rescue_unrescue']
