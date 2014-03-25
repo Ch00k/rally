@@ -201,6 +201,7 @@ debug=false
 # These values set how long rally will wait before polling a resource when
 # waiting for a status change.
 #nova_server_boot_prepoll_delay=1
+#nova_server_rebuild_prepoll_delay=1
 #nova_server_delete_prepoll_delay=2
 #nova_server_reboot_prepoll_delay=2
 #nova_server_rescue_prepoll_delay=2
@@ -211,6 +212,7 @@ debug=false
 #nova_server_start_timeout=300
 #nova_server_stop_timeout=300
 #nova_server_boot_timeout=300
+#nova_server_rebuild_timeout=300
 #nova_server_delete_timeout=300
 #nova_server_reboot_timeout=300
 #nova_server_rescue_timeout=300
@@ -225,6 +227,7 @@ debug=false
 #nova_server_start_poll_interval=1
 #nova_server_stop_poll_interval=2
 #nova_server_boot_poll_interval=1
+#nova_server_rebuild_poll_interval=1
 #nova_server_delete_poll_interval=2
 #nova_server_reboot_poll_interval=2
 #nova_server_rescue_poll_interval=2

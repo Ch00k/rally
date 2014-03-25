@@ -29,6 +29,7 @@ option_names_and_defaults = [
     ('start', 0, 300, 1),
     ('stop', 0, 300, 2),
     ('boot', 1, 300, 1),
+    ('rebuild', 1, 300, 1),
     ('delete', 2, 300, 2),
     ('reboot', 2, 300, 2),
     ('rescue', 2, 300, 2),
@@ -103,6 +104,26 @@ class NovaScenario(base.Scenario):
             update_resource=bench_utils.get_from_manager(),
             timeout=CONF.benchmark.nova_server_boot_timeout,
             check_interval=CONF.benchmark.nova_server_boot_poll_interval
+        )
+        return server
+
+    @scenario_utils.atomic_action_timer('nova.rebuild_server')
+    def _rebuild_server(self, server, image_id):
+        """Rebuilds the given server.
+
+        Returns when the server is actually rebuilt and is in  "Active" state
+
+        :param server: The server to rebuild
+        :param image_id: ID of the image to be used to rebuild the server
+
+        """
+        server.rebuild(image_id)
+        server = bench_utils.wait_for(
+            server,
+            is_ready=bench_utils.resource_is("ACTIVE"),
+            update_resource=bench_utils.get_from_manager(),
+            timeout=CONF.benchmark.nova_server_rebuild_timeout,
+            check_interval=CONF.benchmark.nova_server_rebuild_poll_interval
         )
         return server
 

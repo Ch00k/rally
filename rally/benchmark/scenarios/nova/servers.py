@@ -66,6 +66,16 @@ class NovaServers(utils.NovaScenario,
         self._delete_server(server)
 
     @valid.add_validator(valid.image_valid_on_flavor("flavor_id", "image_id"))
+    def boot_and_rebuild_server(self, image_id, flavor_id,
+                                min_sleep=0, max_sleep=0, **kwargs):
+        """Test booting and then rebuilding a server"""
+        server_name = self._generate_random_name(16)
+
+        server = self._boot_server(server_name, image_id, flavor_id, **kwargs)
+        self.sleep_between(min_sleep, max_sleep)
+        self._rebuild_server(server)
+
+    @valid.add_validator(valid.image_valid_on_flavor("flavor_id", "image_id"))
     def boot_server_from_volume_and_delete(self, image_id, flavor_id,
                                            volume_size,
                                            min_sleep=0, max_sleep=0, **kwargs):
